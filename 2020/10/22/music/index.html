@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Times New Roman, "Noto Serif SC":300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="音乐科技基础">
+<meta property="og:url" content="http://example.com/2020/10/22/music/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://b.picbed.cn/file/picbed-cn/2022/01/03/spectrom.png">
+<meta property="og:image" content="https://b.picbed.cn/file/picbed-cn/2022/01/03/cepstrum.png">
+<meta property="og:image" content="https://b.picbed.cn/file/picbed-cn/2022/01/03/ZCR.png">
+<meta property="og:image" content="http://example.com/2020/10/22/music/music/softmax.png">
+<meta property="og:image" content="http://example.com/2020/10/22/music/loss.png">
+<meta property="og:image" content="http://example.com/2020/10/22/music/backprop.png">
+<meta property="og:image" content="http://example.com/2020/10/22/music/music/momentum.png">
+<meta property="og:image" content="http://example.com/2020/10/22/music/music/RMSprop.png">
+<meta property="og:image" content="http://example.com/2020/10/22/music/music/Adam.png">
+<meta property="og:image" content="http://example.com/2020/10/22/music/music/triplet.png">
+<meta property="article:published_time" content="2020-10-22T21:34:39.000Z">
+<meta property="article:modified_time" content="2022-01-03T02:13:26.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="music">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://b.picbed.cn/file/picbed-cn/2022/01/03/spectrom.png">
+
+<link rel="canonical" href="http://example.com/2020/10/22/music/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>音乐科技基础 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/22/music/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          音乐科技基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-22 22:34:39" itemprop="dateCreated datePublished" datetime="2020-10-22T22:34:39+01:00">2020-10-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-03 02:13:26" itemprop="dateModified" datetime="2022-01-03T02:13:26+00:00">2022-01-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/study-research/" itemprop="url" rel="index"><span itemprop="name">study & research</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <!-- toc -->
+
+<span id="more"></span>
+
+<p>[toc]</p>
+<h2 id="音乐信息"><a href="#音乐信息" class="headerlink" title="音乐信息"></a>音乐信息</h2><h3 id="信号处理"><a href="#信号处理" class="headerlink" title="信号处理"></a>信号处理</h3><h4 id="DFT"><a href="#DFT" class="headerlink" title="DFT"></a>DFT</h4><h4 id="DFT泄露"><a href="#DFT泄露" class="headerlink" title="DFT泄露"></a>DFT泄露</h4><h4 id="加窗"><a href="#加窗" class="headerlink" title="加窗"></a>加窗</h4><h4 id="FFT"><a href="#FFT" class="headerlink" title="FFT"></a>FFT</h4><h3 id="音乐特征"><a href="#音乐特征" class="headerlink" title="音乐特征"></a>音乐特征</h3><hr>
+<h4 id="MP3格式"><a href="#MP3格式" class="headerlink" title="MP3格式"></a>MP3格式</h4><p>Layer-3 音频文件，MPEG(Moving Picture Experts Group) 在汉语中译为活动图像专家组，特指活动影音压缩标准，MPEG音频文件是MPEG1 标准中的声音部分，也叫MPEG 音频层，它根据压缩质量和编码复杂程度划分为三层，即Layer-1、Layer2、Layer3，且分别对应MP1、MP2、MP3 这三种声音文件，并根据不同的用途，使用不同层次的编码。 MPEG 音频编码的层次越高，编码器越复杂，压缩率也越高. 不过MP3 对音频信号采用的是有损压缩方式，为了降低声音失真度，MP3采取了“感官编码技术”，即编码时先对音频文件进行频谱分析，然后用过滤器滤掉噪音电平，接着通过量化的方式将剩下的每一位打散排列，最后形成具有较高压缩比的MP3 文件，并使压缩后的文件在回放时能够达到比较接近原音源的声音效果。</p>
+<h4 id="各种音频处理库（如librosa-eye3D…）与他们的区别"><a href="#各种音频处理库（如librosa-eye3D…）与他们的区别" class="headerlink" title="各种音频处理库（如librosa, eye3D…）与他们的区别"></a>各种音频处理库（如librosa, eye3D…）与他们的区别</h4><p><a target="_blank" rel="noopener" href="https://python.libhunt.com/eyed3-alternatives">https://python.libhunt.com/eyed3-alternatives</a></p>
+<h4 id="spectrom-频域图"><a href="#spectrom-频域图" class="headerlink" title="spectrom 频域图"></a>spectrom 频域图</h4><p>one axis represents <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Time">time</a>, and the other axis represents <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Frequency">frequency</a>; a third dimension indicating the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Amplitude">amplitude</a> of a particular frequency at a particular time is represented by the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Brightness">intensity</a> or color of each point in the image.</p>
+<p>横坐标时间，纵坐标频率，各个频率的强度用颜色表征</p>
+<img src="https://b.picbed.cn/file/picbed-cn/2022/01/03/spectrom.png" alt="spectrom.png" border="0" style="zoom:80%;" />
+
+<h4 id="倒谱"><a href="#倒谱" class="headerlink" title="倒谱"></a>倒谱</h4><p>倒谱（cepstrum）就是一种信号的傅里叶变换经对数运算后再进行傅里叶反变换得到的谱。</p>
+<img src="https://b.picbed.cn/file/picbed-cn/2022/01/03/cepstrum.png" alt="cepstrum.png" border="0" style="zoom:67%;" />
+
+<p>在<strong>Mel频谱</strong>上面获得的倒谱系数h[k]就称为Mel频率倒谱系数，简称MFCC。</p>
+<p>The Mel Scale, mathematically speaking, is the result of some non-linear transformation of the frequency scale. The Mel Spectrogram is a normal Spectrogram, but with a Mel Scale on the y axis.</p>
+<h4 id="各种特征"><a href="#各种特征" class="headerlink" title="各种特征"></a>各种特征</h4><p>过零率：</p>
+<img src="https://b.picbed.cn/file/picbed-cn/2022/01/03/ZCR.png" alt="ZCR.png" border="0" />
+
+<p>为什么？</p>
+<h3 id="编码细节"><a href="#编码细节" class="headerlink" title="编码细节"></a>编码细节</h3><hr>
+<ol>
+<li><p>Python路径处理, os, os.path, glob, pathlib</p>
+</li>
+<li><p>F-string 字符串格式化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">&quot;Tom&quot;</span></span><br><span class="line">age = <span class="number">3</span></span><br><span class="line"><span class="string">f&quot;His name is <span class="subst">&#123;name&#125;</span>, he&#x27;s <span class="subst">&#123;age&#125;</span> years old.&quot;</span></span><br><span class="line"><span class="string">&quot;His name is Tom, he&#x27;s 3 years old.&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><pre><code class="python"># LabelEncoder 是对不连续的数字或者文本进行编号
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+le.fit([1,5,67,100])
+le.transform([1,1,100,67,5])
+输出： array([0,0,3,2,1])
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```python</span><br><span class="line"># OneHotEncoder 用于将表示分类的数据扩维：</span><br><span class="line">from sklearn.preprocessing import OneHotEncoder</span><br><span class="line">ohe = OneHotEncoder()</span><br><span class="line">ohe.fit([[1],[2],[3],[4]])ohe.transform([2],[3],[1],[4]).toarray()</span><br><span class="line">输出：[ [0,1,0,0] , [0,0,1,0] , [1,0,0,0] ,[0,0,0,1] ]</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p><code>Pandas.drop([‘filename’, ‘length’],axis=1)</code> , <code>axis=1</code>说明是纵坐标</p>
+</li>
+<li><p>Keras本身并不是一个框架，实际上它是一个位于其他Deep Learning框架之上的高级API。目前它支持TensorFlow、Theano和CNTK。</p>
+</li>
+<li><p><code>model.add(layers.Dense(256, activation=&#39;relu&#39;))</code> 全连接层</p>
+</li>
+</ol>
+<h3 id="深度学习知识点"><a href="#深度学习知识点" class="headerlink" title="深度学习知识点"></a>深度学习知识点</h3><hr>
+<h4 id="softmax分类器"><a href="#softmax分类器" class="headerlink" title="softmax分类器"></a>softmax分类器</h4><p>输入每个类别的概率（区别与max函数–hard max）</p>
+<img src="music/softmax.png" style="zoom: 60%;" />
+
+<h4 id="交叉熵函数？"><a href="#交叉熵函数？" class="headerlink" title="交叉熵函数？"></a>交叉熵函数？</h4><img src="loss.png" style="zoom: 60%;" />
+
+<p>softmax反向传播求导形式很简单</p>
+<img src="backprop.png" style="zoom: 60%;" />
+
+<h4 id="Optimizer"><a href="#Optimizer" class="headerlink" title="Optimizer"></a>Optimizer</h4><ol>
+<li><p>momentum optimizer – 有惯性 减少震荡</p>
+<img src="music/momentum.png" style="zoom: 60%;" />
+</li>
+<li><p>RMSProp</p>
+<img src="music/RMSprop.png" style="zoom: 60%;" /> 
+
+<p>Dw÷一个很小的数，W方向变化加快；db÷一个很大的数，b方向变化减慢</p>
+</li>
+<li><p>Adam (adaptive moment estimation): combination of momentum optimizer and RMSprop</p>
+<img src="music/Adam.png" style="zoom: 60%;" /></li>
+</ol>
+<h4 id="Loss-function"><a href="#Loss-function" class="headerlink" title="Loss function"></a>Loss function</h4><ol>
+<li><p>triplet loss</p>
+<img src="music/triplet.png" style="zoom: 60%;" /></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.instagram.com/yazhou830/">
+            <span class="icon">
+              <i class="fab fa-instagram"></i>
+            </span>
+
+            <span class="label">Instagram</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.linkedin.com/in/yazhou-li-1982b41a4/">
+            <span class="icon">
+              <i class="fab fa-linkedin-square"></i>
+            </span>
+
+            <span class="label">Linkedin</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/li630925405">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">Github</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.facebook.com/profile.php?id=100075573645042">
+            <span class="icon">
+              <i class="fab fa-facebook"></i>
+            </span>
+
+            <span class="label">Facebook</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/music/" rel="tag"># music</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/08/spider-shell/" rel="prev" title="spider_shell">
+      <i class="fa fa-chevron-left"></i> spider_shell
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/08/TCS/" rel="next" title="TCS">
+      TCS <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9F%B3%E4%B9%90%E4%BF%A1%E6%81%AF"><span class="nav-number">1.</span> <span class="nav-text">音乐信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">信号处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DFT"><span class="nav-number">1.1.1.</span> <span class="nav-text">DFT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DFT%E6%B3%84%E9%9C%B2"><span class="nav-number">1.1.2.</span> <span class="nav-text">DFT泄露</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E7%AA%97"><span class="nav-number">1.1.3.</span> <span class="nav-text">加窗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FFT"><span class="nav-number">1.1.4.</span> <span class="nav-text">FFT</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9F%B3%E4%B9%90%E7%89%B9%E5%BE%81"><span class="nav-number">1.2.</span> <span class="nav-text">音乐特征</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MP3%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">MP3格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E9%9F%B3%E9%A2%91%E5%A4%84%E7%90%86%E5%BA%93%EF%BC%88%E5%A6%82librosa-eye3D%E2%80%A6%EF%BC%89%E4%B8%8E%E4%BB%96%E4%BB%AC%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.2.2.</span> <span class="nav-text">各种音频处理库（如librosa, eye3D…）与他们的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spectrom-%E9%A2%91%E5%9F%9F%E5%9B%BE"><span class="nav-number">1.2.3.</span> <span class="nav-text">spectrom 频域图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%80%92%E8%B0%B1"><span class="nav-number">1.2.4.</span> <span class="nav-text">倒谱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E7%89%B9%E5%BE%81"><span class="nav-number">1.2.5.</span> <span class="nav-text">各种特征</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A0%81%E7%BB%86%E8%8A%82"><span class="nav-number">1.3.</span> <span class="nav-text">编码细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.4.</span> <span class="nav-text">深度学习知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#softmax%E5%88%86%E7%B1%BB%E5%99%A8"><span class="nav-number">1.4.1.</span> <span class="nav-text">softmax分类器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%86%B5%E5%87%BD%E6%95%B0%EF%BC%9F"><span class="nav-number">1.4.2.</span> <span class="nav-text">交叉熵函数？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Optimizer"><span class="nav-number">1.4.3.</span> <span class="nav-text">Optimizer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Loss-function"><span class="nav-number">1.4.4.</span> <span class="nav-text">Loss function</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
